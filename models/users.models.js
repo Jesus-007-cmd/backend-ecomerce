@@ -6,7 +6,7 @@ const userSchema = new Schema({
         required: true,
         unique: true
     },
-    nombre: {
+    nombreNegocio: {
         type: String,
         required: true
     },
@@ -14,11 +14,38 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    edad: {
-        type: Number,
+    RFC: {
+        type: String,
+        required: true
+    },
+    calle: {
+        type: String,
+        required: true
+    },
+    colonia: {
+        type: String,
+        required: true
+    },
+    codigo_postal: {
+        type: String,
+        required: true
+    },
+    ciudad: {
+        type: String,
+        required: true
+    },
+    fecha_de_alta: {
+        type: Date,
+        default: Date.now
+    },
+    telefono: {
+        type: String,
+        required: true
+    },
+    responsables: {
+        type: [String],
         required: true
     }
 });
-
 const usersmodels = model('usuarios', userSchema);
 module.exports = usersmodels;
