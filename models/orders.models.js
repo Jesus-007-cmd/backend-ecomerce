@@ -1,13 +1,11 @@
 const { Schema, model } = require('mongoose');
-/*const producto ={
-nombre:"",
-precio:0,
-cantidad:0,
-}*/
+
 const productschema= new Schema({
     nombre: {type: String} ,
-    precio: {type: Number},
-    cantidad: {type: Number}
+    costo: {type: Number},
+    cantidad: {type: Number},
+    gramos: {type: Number},
+    _id: {type: String}
 });
 
 const ordersSchema = new Schema({
@@ -29,8 +27,13 @@ const ordersSchema = new Schema({
     },
     fecha_completada: {
         type: Date,
+        required: false
+    },
+    usuario: {
+        type: String,
         required: true
     }
+
 
 
 });

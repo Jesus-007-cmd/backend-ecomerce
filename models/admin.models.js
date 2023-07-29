@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const adminSchema = new Schema({
-  username: {
+  correo: {
     type: String,
     required: true,
     unique: true,
@@ -12,9 +12,9 @@ const adminSchema = new Schema({
   },
   description: {
     type: String,
-  },
+  }
 });
 
-const Admin = model('Admin', adminSchema);
+const adminmodels = model('Admin', adminSchema);
 
-module.exports = Admin;
+module.exports = adminmodels;

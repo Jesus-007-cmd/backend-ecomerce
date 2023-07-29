@@ -1,14 +1,14 @@
 const express = require('express'); // imports en node js sin ninguna configuracion
 const cors = require('cors'); // imports en node js sin ninguna configuracion
+const multer = require('multer'); // Importa el módulo multer para la subida de imágenes
+const path = require('path');
 
 const app = express();
-
 //const appV = express();
-
 const { getUsers, login, createUser, userDelete, userUpdate } = require('./controllers/users.controllers')
 const { getProducts, createProduct, productUpdate, productDelete } = require('./controllers/products.controllers')
 const { getOrders, createOrder, orderDelete, orderUpdate} = require('./controllers/orders.controllers')
-const { getUserAdmins } = require('./controllers/useradmin.controllers');
+const { loginAdmin, createAdmin } = require('./controllers/admin.controllers');
 
 
 const mongoose = require('mongoose');
@@ -23,14 +23,47 @@ dominio sin permiso explícito del servidor. Cuando una solicitud se considera d
 app.use(cors())  // cors 
 app.use(express.json()) // nos permite que nuestra peticion post reciba informacion desde el body
  
+
 // Con Promise se puede trabajar con then y con catch
 mongoose.connect(process.env.HOSTDB).then(() => {
     console.log('Conexion a MongoDB');
 }).catch((error) => {
     console.log(error);
 })
+
+// Configuración de multer para guardar las imágenes en la carpeta 'uploads'
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    },
+  });
+  
+  const upload = multer({ storage: storage });
+
+  // Ruta para subir una imagen
+app.post('/manejoimagenes/upload', upload.single('imagen'), (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: 'No se ha seleccionado ninguna imagen' });
+      }
+  
+      // Obtener la ruta de la imagen en la carpeta 'uploads'
+      const imagePath = req.file.path;
+  
+      // Devolver la ruta de la imagen para que pueda ser guardada en la base de datos
+      res.status(200).json({ imagePath });
+    } catch (error) {
+      console.error('Error al subir la imagen:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  });
+  
 //Usuarios Admin
-app.get('/useradmin', getUserAdmins);
+app.post('/loginAdmin', loginAdmin);
+app.post('/CrearAdmin', createAdmin); //solo se descomenta para crear nuevos admin con seguridad
 // Usuarios 
 app.get('/user', getUsers);
 app.post('/user/login', login);
@@ -49,12 +82,8 @@ app.put('/order/:id', orderUpdate);
 app.delete('/order/:id', orderDelete);
 
 
-
  
 // servidor
 app.listen(port, () => { // levanta el servidor
     console.log('Servidor funcionando en el puerto: ' + port)
 }); 
-/*appP.listen(port, () => { // levanta el servidor
-    console.log('Servidor funcionando en el puerto: ' + port)
-}); */

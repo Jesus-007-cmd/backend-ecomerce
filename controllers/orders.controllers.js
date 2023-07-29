@@ -18,14 +18,15 @@ const getOrders = async (req, res) => {
 
 // POST ( crear )
 const createOrder = async (req, res) => {
-    const { fecha, products, total, completada, fecha_completada } = req.body;
+    const { fecha, products, total, completada, fecha_completada, usuario } = req.body;
     
     const order = new ordersmodels({
         fecha: fecha,
         products: products,
         total: total, 
         completada: completada,
-        fecha_completada: fecha_completada
+        fecha_completada: fecha_completada,
+        usuario: usuario
     })
 
     await order.save()
@@ -43,14 +44,15 @@ const createOrder = async (req, res) => {
 const orderUpdate = async (req, res) => {
 
     const { id } = req.params;
-    const { fecha, products, total, completada, fecha_completada } = req.body;
+    const { fecha, products, total, completada, fecha_completada, usuario } = req.body;
 
     await ordersmodels.findByIdAndUpdate(id, {
         fecha: fecha,
         products: products,
         total: total, 
         completada: completada,
-        fecha_completada: fecha_completada
+        fecha_completada: fecha_completada,
+        usuario: usuario
     });
 
     res

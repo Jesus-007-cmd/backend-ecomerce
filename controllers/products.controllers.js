@@ -1,95 +1,77 @@
 const productssmodels = require('../models/products.models');
 
-// crear nuestro CRUD
 
 // GET ( obtener )
-/*const getProducts = async (req, res) => {
-
-    const products = await productssmodels.find(); // find = obtener todo
-
-    res
-        .status(200) // 200 = OK
-        .json({
-            products: products
-        })
-        .send()
-
-}*/
 const getProducts = async (req, res) => {
-    try {
-      const products = await productssmodels.find(); // find = obtener todo
-      res.status(200).json({ products: products });
-    } catch (error) {
-      console.error('Error al obtener los productos:', error);
-      res.status(500).json({ message: 'Error interno del servidor' });
-    }
-  };
+  try {
+    const products = await productssmodels.find();
+    res.status(200).json({ products: products });
+  } catch (error) {
+    console.error('Error al obtener los productos:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+};
 
 // POST ( crear )
 const createProduct = async (req, res) => {
-    const { nombre, precio, gramos, imagen, inventario } = req.body;
-    
+  try {
+    const { nombre, costo, precioalpublico,  gramos } = req.body;
+   
     const product = new productssmodels({
-        nombre: nombre,
-        precio: precio,
-        gramos: gramos, 
-        imagen: imagen,
-        inventario: inventario
-    })
-
-    await product.save()
-
+      nombre: nombre,
+      costo: costo,
+      precioalpublico: precioalpublico,
+      gramos: gramos,
+     
+    });
+    await product.save();
     res
-        .status(201) // 201 = Create
-        .json({
-            message: 'Producto creado'
-        })
-        .send()
-
-}
+      .status(201) // 201 = Create
+      .json({
+        message: 'Producto creado'
+      });
+  } catch (error) {
+    console.error('Error al crear producto:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+};
 
 // PUT ( actualizar )
 const productUpdate = async (req, res) => {
+  const { id } = req.params;
+  const { nombre, costo, precioalpublico,  gramos } = req.body;
 
-    const { id } = req.params;
-    const { nombre, precio, gramos, imagen, inventario }  = req.body;
+  await productssmodels.findByIdAndUpdate(id, {
+    nombre: nombre,
+    costo: costo,
+    precioalpublico: precioalpublico,
+    gramos: gramos
+    
+  });
 
-    await productssmodels.findByIdAndUpdate(id, {
-        precio: nombre,
-        nombre: precio,
-        gramos: gramos, 
-        imagen: imagen,
-        inventario: inventario
+  res
+    .status(200)
+    .json({
+      message: 'Actualizado correctamente'
     });
-
-    res
-        .status(200)
-        .json({
-            message: 'Actualizado correctamente'
-        })
-        .send()
-
-}
+};
 
 // DELETE ( eliminar )
 const productDelete = async (req, res) => {
+  const { id } = req.params;
 
-    const { id } = req.params;
+  await productssmodels.findByIdAndDelete(id);
 
-    await productssmodels.findByIdAndDelete(id);
-
-    res
-        .status(200)
-        .json({
-            message: 'Eliminado correctamente'
-        })
-        .send()
-
-}
+  res
+    .status(200)
+    .json({
+      message: 'Eliminado correctamente'
+    });
+};
 
 module.exports = {
-    getProducts,
-    createProduct,
-    productDelete,
-    productUpdate
-}
+  getProducts,
+  createProduct,
+  productDelete,
+  productUpdate
+};

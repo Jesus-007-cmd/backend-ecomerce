@@ -31,7 +31,7 @@ const login = async (req, res) => {
             })
             .send()
     }
-    console.log(bcrypt.hashSync(contraseña, 10), user.contraseña);
+    
     const isMatch = bcrypt.compareSync(contraseña, user.contraseña);
     if (isMatch) {
         const token = generateJWT(user._id);
@@ -62,7 +62,7 @@ const createUser = async (req, res) => {
     const hash = bcrypt.hashSync(contraseña, 10) //clase  17 de mayo despues de las 8 pm
     const user = new usersmodels({
         correo: correo,
-        nombreNegocio: nombre,
+        nombreNegocio: nombreNegocio,
         contraseña: hash, 
       RFC: RFC,
       calle: calle,
