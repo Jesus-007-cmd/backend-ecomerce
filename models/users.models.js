@@ -39,11 +39,11 @@ const userSchema = new Schema({
         default: Date.now
     },
     telefono: {
-        type: String,
+        type: Number,
         required: true
     },
     responsables: {
-        type: [String],
+        type: String,
         required: true
     }
 });

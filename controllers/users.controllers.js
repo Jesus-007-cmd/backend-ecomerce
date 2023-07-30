@@ -58,7 +58,7 @@ const login = async (req, res) => {
 
 // POST ( crear )
 const createUser = async (req, res) => {
-    const { correo, nombreNegocio, contraseña, RFC, calle, colonia, codigo_postal, ciudad, telefono, responsables } = req.body;
+    const { correo, nombreNegocio, contraseña, RFC, calle, colonia, codigo_postal, ciudad,fecha_de_alta, telefono, responsables } = req.body;
     const hash = bcrypt.hashSync(contraseña, 10) //clase  17 de mayo despues de las 8 pm
     const user = new usersmodels({
         correo: correo,
@@ -69,6 +69,7 @@ const createUser = async (req, res) => {
       colonia: colonia,
       codigo_postal: codigo_postal,
       ciudad: ciudad,
+      fecha_de_alta: fecha_de_alta,
       telefono: telefono,
       responsables: responsables
     })
