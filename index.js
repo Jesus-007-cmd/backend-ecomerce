@@ -13,7 +13,7 @@ const { loginAdmin, createAdmin } = require('./controllers/admin.controllers');
 
 const mongoose = require('mongoose');
 require('dotenv').config() // importamos dotenv (conocidos como variables de entorno y se guardan en el archivo .env)
-const port = process.env.PORT || 3000; // regularmente se usa el puerto 3000
+const port = process.env.PORT || 3001; // regularmente se usa el puerto 3000
 // || or, && and
  
 // config para recibir info
